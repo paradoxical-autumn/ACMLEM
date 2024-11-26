@@ -29,6 +29,7 @@
 		<IncludeSymbols>False</IncludeSymbols>
 		<PackageProjectUrl>https://github.com/paradoxical-autumn/ACMLEM</PackageProjectUrl>
 		<RepositoryUrl>${PackageProjectUrl}</RepositoryUrl>
+		<Version>1.0.1</Version>
 	</PropertyGroup>
 	
 	<Target Name="ExtractInstalledMonkeyMods" BeforeTargets="Restore;CollectPackageReferences">
