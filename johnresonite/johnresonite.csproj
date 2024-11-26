@@ -1,0 +1,89 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<langversion>latest</langversion>
+	<OutputType>Library</OutputType>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <DefaultResonitePath>C:\Program Files (x86)\Steam\steamapps\common\Resonite</DefaultResonitePath>
+    <ResonitePath Condition="'$(ResonitePath)' == '' And Exists('$(DefaultResonitePath)')">$(DefaultResonitePath)</ResonitePath>
+    <StartProgram>$(ResonitePath)\Resonite.exe</StartProgram>
+    <StartArguments Condition="'$(ResoniteCache)' != ''">$(StartArguments) -CachePath "$(ResoniteCache)"</StartArguments>
+    <StartWorkingDirectory>$(ResonitePath)</StartWorkingDirectory>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<IsPackable>true</IsPackable>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<AssemblyName>JohnResoniteMod</AssemblyName>
+		<PackageId>xyz.its-autumn.johnresonite</PackageId>
+		<Title>JohnResoniteMod</Title>
+		<Authors>paradoxical autumn</Authors>
+		<Description>A silly lil mod that turns everyone into john resonite</Description>
+		<AssemblyFileName>$(AssemblyTitle).dll</AssemblyFileName>
+		<IncludeSymbols>False</IncludeSymbols>
+	</PropertyGroup>
+	
+	<Target Name="ExtractInstalledMonkeyMods" BeforeTargets="Restore;CollectPackageReferences">
+		<Exec Condition="$([MSBuild]::IsOSPlatform('Windows')) And Exists('$(ResonitePath)\MonkeyLoader')" Command="&#xD;&#xA;          nuget init &quot;$(ResonitePath)\MonkeyLoader\GamePacks&quot; &quot;$(MSBuildProjectDirectory)\MonkeyLoader GamePacks&quot;&#xD;&#xA;          nuget init &quot;$(ResonitePath)\MonkeyLoader\Mods&quot; &quot;$(MSBuildProjectDirectory)\MonkeyLoader Mods&quot;" />
+		<Exec Condition="$([MSBuild]::IsOSPlatform('Linux')) And Exists('$(ResonitePath)/MonkeyLoader')" Command="&#xD;&#xA;          nuget init &quot;$(ResonitePath)/MonkeyLoader/GamePacks&quot; &quot;$(MSBuildProjectDirectory)/MonkeyLoader GamePacks&quot;&#xD;&#xA;          nuget init &quot;$(ResonitePath)/MonkeyLoader/Mods&quot; &quot;$(MSBuildProjectDirectory)/MonkeyLoader Mods&quot;" />
+	</Target>
+	<Target Name="MovePack" AfterTargets="Pack">
+		<Exec Condition="$([MSBuild]::IsOSPlatform('Windows'))" Command="copy /Y &quot;$(OutputPath)\..\$(PackageId).$(Version).nupkg&quot; &quot;$(ResonitePath)\MonkeyLoader\Mods\$(AssemblyName).nupkg&quot;" />
+		<Exec Condition="$([MSBuild]::IsOSPlatform('Linux'))" Command="cp -f &quot;$(OutputPath)/../$(PackageId).$(Version).nupkg&quot; &quot;$(ResonitePath)/MonkeyLoader/Mods/$(AssemblyName).nupkg&quot;" />
+	</Target>
+
+	<ItemGroup>
+		<Reference Include="Harmony">
+			<HintPath>$(ResonitePath)\MonkeyLoader\0Harmony.dll</HintPath>
+		</Reference>
+		<Reference Include="MonkeyLoader">
+			<HintPath>$(ResonitePath)\MonkeyLoader\MonkeyLoader.dll</HintPath>
+		</Reference>
+		<PackageReference Include="MonkeyLoader.GamePacks.Resonite" Version="0.20.0-beta" />
+	</ItemGroup>
+	
+  <ItemGroup>
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(ResonitePath)\Resonite_Data\Managed\Assembly-CSharp.dll</HintPath>
+		</Reference>
+		<Reference Include="Elements.Assets">
+			<HintPath>$(ResonitePath)\Resonite_Data\Managed\Elements.Assets.dll</HintPath>
+		</Reference>
+		<Reference Include="Elements.Core">
+			<HintPath>$(ResonitePath)\Resonite_Data\Managed\Elements.Core.dll</HintPath>
+		</Reference>
+		<Reference Include="Elements.Quantity">
+			<HintPath>$(ResonitePath)\Resonite_Data\Managed\Elements.Quantity.dll</HintPath>
+		</Reference>
+		<Reference Include="FrooxEngine">
+			<HintPath>$(ResonitePath)\Resonite_Data\Managed\FrooxEngine.dll</HintPath>
+		</Reference>
+		<Reference Include="FrooxEngine.Commands">
+			<HintPath>$(ResonitePath)\Resonite_Data\Managed\FrooxEngine.Commands.dll</HintPath>
+		</Reference>
+		<Reference Include="FrooxEngine.Weaver">
+			<HintPath>$(ResonitePath)\Resonite_Data\Managed\FrooxEngine.Weaver.dll</HintPath>
+		</Reference>
+		<Reference Include="ProtoFlux.Core">
+			<HintPath>$(ResonitePath)\Resonite_Data\Managed\ProtoFlux.Core.dll</HintPath>
+		</Reference>
+		<Reference Include="ProtoFlux.Nodes.Core">
+			<HintPath>$(ResonitePath)\Resonite_Data\Managed\ProtoFlux.Nodes.Core.dll</HintPath>
+		</Reference>
+		<Reference Include="ProtoFlux.Nodes.FrooxEngine">
+			<HintPath>$(ResonitePath)\Resonite_Data\Managed\ProtoFlux.Nodes.FrooxEngine.dll</HintPath>
+		</Reference>
+		<Reference Include="ProtoFluxBindings">
+			<HintPath>$(ResonitePath)\Resonite_Data\Managed\ProtoFluxBindings.dll</HintPath>
+		</Reference>
+		<Reference Include="QuantityX">
+			<HintPath>$(ResonitePath)\Resonite_Data\Managed\QuantityX.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+</Project>
