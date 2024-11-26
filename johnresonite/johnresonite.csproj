@@ -27,6 +27,8 @@
 		<Description>A silly lil mod that turns everyone into john resonite</Description>
 		<AssemblyFileName>$(AssemblyTitle).dll</AssemblyFileName>
 		<IncludeSymbols>False</IncludeSymbols>
+		<PackageProjectUrl>https://github.com/paradoxical-autumn/ACMLEM</PackageProjectUrl>
+		<RepositoryUrl>${PackageProjectUrl}</RepositoryUrl>
 	</PropertyGroup>
 	
 	<Target Name="ExtractInstalledMonkeyMods" BeforeTargets="Restore;CollectPackageReferences">
@@ -85,5 +87,9 @@
 		<Reference Include="QuantityX">
 			<HintPath>$(ResonitePath)\Resonite_Data\Managed\QuantityX.dll</HintPath>
 		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="Locale\*.json" Pack="true" PackagePath="content/Locale/" />
 	</ItemGroup>
 </Project>
