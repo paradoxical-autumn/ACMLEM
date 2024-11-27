@@ -32,13 +32,13 @@ namespace JohnResoniteMod
                 return;
             }
 
-            // name people "john resonite". unless youve changed it but that's sad.
+            // name people "john resonite".
             foreach (IField<string> target in ___LabelTargets)
             {
                 if (target != null)
                 {
                     // `ConfigSection` comes from the fact we're using `ConfiguredResoniteMonkey<T, C>`
-                    // if we weren't. apparently there's a way to access configs, see:
+                    // if for some reason you're not: apparently there's a way to access configs, see:
                     // https://resonitemoddinggroup.github.io/MonkeyLoader.GamePacks.Resonite/docs/configuration.html
                     // but i couldn't get it to work.
                     // just use this method, it's even recommended!
